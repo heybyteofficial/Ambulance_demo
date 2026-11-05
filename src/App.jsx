@@ -1,42 +1,88 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import { BookingProvider } from './context/BookingContext';
-import Splash from './screens/Splash/Splash';
-import SignIn from './screens/Auth/SignIn';
-import Home from './screens/Citizen/Home';
-import Tracking from './screens/Citizen/Tracking';
-import FirstAid from './screens/Citizen/FirstAid';
-import Trips from './screens/Citizen/Trips';
-import Profile from './screens/Citizen/Profile';
-import BottomNav from './components/BottomNav';
+import { useEffect, useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { BookingProvider } from "./context/BookingContext";
+import Splash from "./screens/Splash/Splash";
+import SignIn from "./screens/Auth/SignIn";
+import CrewSignIn from "./screens/crewApp/auth/CrewSignIn";
+import Home from "./screens/Citizen/Home";
+import Tracking from "./screens/Citizen/Tracking";
+import FirstAid from "./screens/Citizen/FirstAid";
+import Trips from "./screens/Citizen/Trips";
+import Profile from "./screens/Citizen/Profile";
+import BottomNav from "./components/BottomNav";
+import CrewNav from "./screens/crewApp/CrewNav";
+import Duty from "./screens/crewApp/Duty";
+import CrewTrips from "./screens/crewApp/Trips";
+import Vehicle from "./screens/crewApp/Vehicle";
+import CrewProfile from "./screens/crewApp/Profile";
 
 function Layout() {
   const { pathname } = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const isCitizen =
+    pathname === "/citizen" ||
+    pathname.startsWith("/citizen/") ||
+    ["/tracking", "/first-aid", "/trips", "/profile"].includes(pathname);
+  const isCrew = !isCitizen;
 
-  // The citizen app needs the citizen sign-in
   if (!isAuthenticated) {
     return (
       <div className="app-shell app-shell--full">
-        <SignIn />
+        {isCitizen ? <SignIn /> : <CrewSignIn />}
       </div>
     );
   }
 
-  const fullScreen = pathname === '/tracking';
+  if (user?.role === 'crew' && isCitizen) {
+    return <Navigate to="/" replace />;
+  }
+  if (user?.role === 'citizen' && isCrew) {
+    return <Navigate to="/citizen" replace />;
+  }
+
+  const fullScreen =
+    pathname === "/citizen/tracking" || pathname === "/tracking";
 
   return (
-    <div className={`app-shell ${fullScreen ? 'app-shell--full' : ''}`}>
+    <div className={`app-shell ${fullScreen ? "app-shell--full" : ""}`}>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/tracking" element={<Tracking />} />
-        <Route path="/first-aid" element={<FirstAid />} />
-        <Route path="/trips" element={<Trips />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/" element={<Duty />} />
+        <Route path="/crew" element={<Navigate to="/" replace />} />
+        <Route path="/crew/trips" element={<CrewTrips />} />
+        <Route path="/crew/vehicle" element={<Vehicle />} />
+        <Route path="/crew/profile" element={<CrewProfile />} />
+        <Route path="/crew/*" element={<Navigate to="/" replace />} />
+        <Route path="/citizen" element={<Home />} />
+        <Route path="/citizen/tracking" element={<Tracking />} />
+        <Route path="/citizen/first-aid" element={<FirstAid />} />
+        <Route path="/citizen/trips" element={<Trips />} />
+        <Route path="/citizen/profile" element={<Profile />} />
+        <Route
+          path="/tracking"
+          element={<Navigate to="/citizen/tracking" replace />}
+        />
+        <Route
+          path="/first-aid"
+          element={<Navigate to="/citizen/first-aid" replace />}
+        />
+        <Route
+          path="/trips"
+          element={<Navigate to="/citizen/trips" replace />}
+        />
+        <Route
+          path="/profile"
+          element={<Navigate to="/citizen/profile" replace />}
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      {!fullScreen && <BottomNav />}
+      {!fullScreen && (isCrew ? <CrewNav /> : <BottomNav />)}
     </div>
   );
 }

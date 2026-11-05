@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { APP_NAME, DEMO_OTP } from '../../mock/app';
 import './SignIn.scss';
@@ -21,7 +22,7 @@ export default function SignIn() {
 
   const verify = () => {
     if (otp !== DEMO_OTP) return setError('Wrong code. Please try again.');
-    login(name.trim(), phone.replace(/\D/g, ''));
+    login(name.trim(), phone.replace(/\D/g, ''), 'citizen');
   };
 
   return (
@@ -51,6 +52,7 @@ export default function SignIn() {
 
             {error && <p className="signin__error">{error}</p>}
             <button className="signin__btn" onClick={sendCode}>Send code</button>
+            <Link className="signin__link" to="/">Crew sign in</Link>
           </>
         )}
 

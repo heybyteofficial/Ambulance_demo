@@ -2,10 +2,10 @@ import { NavLink } from 'react-router-dom';
 import './BottomNav.scss';
 
 const items = [
-  { to: '/', icon: 'bi-house-door-fill', label: 'Home' },
-  { to: '/trips', icon: 'bi-clock-history', label: 'Trips' },
-  { to: '/first-aid', icon: 'bi-heart-pulse-fill', label: 'First aid' },
-  { to: '/profile', icon: 'bi-person-fill', label: 'Profile' },
+  { to: '/citizen', icon: 'bi-house-door-fill', label: 'Home' },
+  { to: '/citizen/trips', icon: 'bi-clock-history', label: 'Trips' },
+  { to: '/citizen/first-aid', icon: 'bi-heart-pulse-fill', label: 'First aid' },
+  { to: '/citizen/profile', icon: 'bi-person-fill', label: 'Profile' },
 ];
 
 export default function BottomNav() {

@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from "react";
 
-const KEY = 'ambulance_account';
+const KEY = "ambulance_account";
 const AuthContext = createContext(null);
 
 function read() {
@@ -15,8 +15,8 @@ function read() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(read);
 
-  const login = (name, phone) => {
-    const account = { name, phone };
+  const login = (name, phone, role = "citizen") => {
+    const account = { name, phone, role };
     localStorage.setItem(KEY, JSON.stringify(account));
     setUser(account);
   };
@@ -27,7 +27,9 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: Boolean(user), login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated: Boolean(user), login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

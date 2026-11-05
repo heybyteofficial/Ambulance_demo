@@ -96,7 +96,7 @@ export default function Tracking() {
   }, [step, status]);
 
   // No booking (cancelled, finished or old data): go back home
-  if (!booking || !patient) return <Navigate to="/" replace />;
+  if (!booking || !patient) return <Navigate to="/citizen" replace />;
   // Which route and progress to show for the current status
   const onTrip = status === 'picked' || status === 'hospital';
    const current = onTrip ? toHospital : toPatient;
@@ -169,12 +169,12 @@ export default function Tracking() {
 };
   const handleCancel = () => {
     clearBooking();
-    navigate('/');
+    navigate('/citizen');
   };
   // Trip finished: save it to "Your trips" first
   const handleDone = () => {
     completeBooking();
-    navigate('/');
+    navigate('/citizen');
   };
    // No driver yet? Stay on this screen and show no driver details.
   if (step === 'confirmed' || !unit) {

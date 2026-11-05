@@ -37,7 +37,7 @@ export default function Trips() {
 
       {banner && <div className="trips__banner"><i className="bi bi-check-circle-fill" /> {banner}</div>}
 
-      <button className="trips__sos" onClick={() => navigate('/')}>
+      <button className="trips__sos" onClick={() => navigate('/citizen')}>
         <i className="bi bi-exclamation-triangle-fill" />
         <span>In an emergency? Use the SOS button instead.</span>
       </button>
