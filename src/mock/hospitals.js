@@ -17,12 +17,6 @@ export const defaultBeds = {
   govt: { icu: 2, ventilator: 1, trauma: 5, maternity: 0 },
 };
 
-export const facilityLabels = {
-  icu: 'ICU',
-  ventilator: 'Ventilator',
-  trauma: 'Trauma',
-  maternity: 'Maternity',
-};
 
 // Which facility each emergency needs
 export const neededFacility = {
@@ -36,14 +30,3 @@ export const neededFacility = {
   other: 'icu',
 };
 
-// What the ER team should prepare
-export const prepNotes = {
-  accident: 'Trauma team on standby. Keep X-ray and CT free. Blood bank alerted.',
-  'chest-pain': 'Cardiology on call. Keep ECG and defibrillator ready at the door.',
-  pregnancy: 'Gynaecologist and labour room ready. Neonatal unit on alert.',
-  breathing: 'Oxygen and ventilator ready. Respiratory team on call.',
-  unconscious: 'Keep a stretcher at the door. Doctor to check airway and vitals on arrival.',
-  burns: 'Burns unit ready. Prepare IV fluids and pain relief.',
-  'snake-bite': 'Anti-venom available. Prepare for monitoring in ICU.',
-  other: 'Emergency doctor to be at the door for assessment.',
-};

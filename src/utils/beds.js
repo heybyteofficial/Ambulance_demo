@@ -15,10 +15,6 @@ export function getBeds() {
   return defaultBeds;
 }
 
-export function saveBeds(beds) {
-  localStorage.setItem(KEY, JSON.stringify(beds));
-}
-
 // Nearest hospital to the patient that has a free bed this emergency needs.
 // "from" is the patient's [lat, lng].
 export function recommendHospital(typeId, from) {

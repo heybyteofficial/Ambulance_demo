@@ -54,35 +54,12 @@ export function BookingProvider({ children }) {
         lat: pickup.lat,
         lng: pickup.lng,
       },
-      ambulance: null, // filled in by the first driver who accepts
+      ambulance: null,
       notified: profile.contacts.map((c) => c.name),
       abha: profile.abha,
     });
   };
 
-  // The first driver to accept gets the job. It reads the newest saved
-  // booking, so a second driver who taps Accept a moment later is refused.
-  const acceptBooking = (unit, km) => {
-    const latest = read();
-    if (!latest || latest.status !== 'requested') return false;
-    save({
-      ...latest,
-      status: 'accepted',
-      ambulance: {
-        id: unit.id,
-        station: unit.station,
-        driver: unit.driver,
-                phone: unit.phone,
-        number: unit.number,
-        lat: unit.lat,
-        lng: unit.lng,
-      },
-      distanceText: `${km.toFixed(1)} km away`,
-    });
-    return true;
-  };
-  const updateStatus = (status) => save({ ...booking, status });
-   const updateBooking = (patch) => save({ ...booking, ...patch });
   const clearBooking = () => save(null);
   // Trip finished: keep it in "Your trips", then clear the live booking
   const completeBooking = () => {
@@ -92,7 +69,7 @@ export function BookingProvider({ children }) {
   };
   return (
     <BookingContext.Provider
-      value={{ booking, createBooking,acceptBooking, updateStatus,updateBooking, completeBooking,clearBooking }}
+      value={{ booking, createBooking, completeBooking, clearBooking }}
     >
       {children}
     </BookingContext.Provider>
