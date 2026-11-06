@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { BookingProvider } from "./context/BookingContext";
+import { CrewProvider } from "./context/CrewContext";
 import Splash from "./screens/Splash/Splash";
 import SignIn from "./screens/Auth/SignIn";
 import CrewSignIn from "./screens/crewApp/auth/CrewSignIn";
@@ -101,7 +102,9 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <BookingProvider>
-          <Layout />
+          <CrewProvider>
+            <Layout />
+          </CrewProvider>
         </BookingProvider>
       </AuthProvider>
     </BrowserRouter>

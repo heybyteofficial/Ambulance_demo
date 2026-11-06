@@ -228,3 +228,17 @@
   position: absolute;
   inset: 0;
 }
+
+.track__handoff {
+  display: grid;
+  gap: 5px;
+  margin-top: 10px;
+  padding: 11px 12px;
+  border-radius: $radius-sm;
+  background: $green-light;
+  color: $text;
+
+  strong { font-size: 13px; }
+  span, small { color: $muted; font-size: 11px; }
+  small { color: $green-dark; font-weight: 600; }
+}

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { recommendHospital } from '../utils/beds';
 import { getPickup } from '../utils/dispatch';
 import { getProfile } from '../utils/profile';
@@ -22,15 +22,28 @@ export function BookingProvider({ children }) {
     const onStorage = (e) => {
       if (e.key === KEY) setBooking(read());
     };
+    const onDemoSeeded = () => setBooking(read());
     window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    window.addEventListener('ambulance_crew_demo_seeded', onDemoSeeded);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('ambulance_crew_demo_seeded', onDemoSeeded);
+    };
   }, []);
 
-  const save = (value) => {
+  const save = useCallback((value) => {
     setBooking(value);
     if (value) localStorage.setItem(KEY, JSON.stringify(value));
     else localStorage.removeItem(KEY);
-  };
+  }, []);
+
+  const updateBooking = useCallback((updates) => {
+    const current = read();
+    if (!current) return null;
+    const next = { ...current, ...updates };
+    save(next);
+    return next;
+  }, [save]);
 
    const createBooking = ({ type, forWhom }) => {
     const pickup = getPickup();
@@ -57,6 +70,7 @@ export function BookingProvider({ children }) {
       ambulance: null,
       notified: profile.contacts.map((c) => c.name),
       abha: profile.abha,
+      crewOfferState: null,
     });
   };
 
@@ -69,7 +83,7 @@ export function BookingProvider({ children }) {
   };
   return (
     <BookingContext.Provider
-      value={{ booking, createBooking, completeBooking, clearBooking }}
+      value={{ booking, createBooking, completeBooking, clearBooking, updateBooking }}
     >
       {children}
     </BookingContext.Provider>

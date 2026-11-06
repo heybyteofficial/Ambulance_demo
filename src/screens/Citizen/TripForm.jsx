@@ -65,6 +65,7 @@ export default function TripForm({ kind, onBack, onSaved }) {
       need: isScheduled ? f.need : null,
       notes: f.notes.trim(),
       whenText,
+      whenAt: later ? new Date(`${f.date}T${f.time}`).getTime() : null,
     });
     onSaved();
   };

@@ -261,6 +261,19 @@ export default function Tracking() {
             <i className="bi bi-hospital-fill" /> Going to: {booking.hospital}
           </p>
         )}
+        {booking.patientCondition && (
+          <div className="track__handoff">
+            <strong>Patient update · {booking.patientCondition}</strong>
+            <span>
+              {[booking.vitals?.bp && `BP ${booking.vitals.bp}`,
+                booking.vitals?.pulse && `Pulse ${booking.vitals.pulse}`,
+                booking.vitals?.spo2 && `SpO₂ ${booking.vitals.spo2}%`]
+                .filter(Boolean)
+                .join(' · ') || 'No vitals recorded'}
+            </span>
+            {booking.hospitalAlertedAt && <small>Hospital pre-alert recorded by crew</small>}
+          </div>
+        )}
 
         <div className="track__buttons">
           <button className="track__call" onClick={handleCall}>
